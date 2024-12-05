@@ -1,6 +1,7 @@
 package com.gopal.photoexplorer.ui.main.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.gopal.photoexplorer.R
 import com.gopal.photoexplorer.databinding.FragmentMainBinding
 import com.gopal.photoexplorer.ui.main.fragments.Adapter.PhotoAdapter
@@ -34,22 +36,30 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchPhotos(page = 1) // Fetch data if not already loaded
+        viewModel.fetchPhotos(page = 1)
         setupObservers()
         setupQuickReturnPattern()
     }
 
-    fun setupObservers(){
-        viewModel.photos.observe(viewLifecycleOwner){resource->
-            when(resource){
+    private fun setupObservers() {
+        viewModel.photos.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
                 is Resource.Loading -> {
                 }
+
                 is Resource.Success -> {
 //                    binding.progressBar.visibility = View.GONE
-                    val adapter = PhotoAdapter(requireContext(), resource.data ?: emptyList())
+                    Log.d("Gopal", resource.data.toString())
+                    val adapter = PhotoAdapter(requireContext(), resource.data ?: emptyList()) { store ->
+                        val action =
+                            MainFragmentDirections.actionMainFragmentToDetailsFragment(store)
+                        findNavController().navigate(action)
+                    }
                     binding.listView.adapter = adapter
                 }
+
                 is Resource.Error -> {
+                    Log.d("Gopal error:",resource.message!! )
                     Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
                 }
             }

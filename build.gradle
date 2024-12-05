@@ -2,6 +2,8 @@
 buildscript {
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:2.49"
+        // SafeArgs plugin
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.8.4"
     }
 }
 plugins {

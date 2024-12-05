@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class PhotoRepository @Inject constructor(private val photoApiHelper: PhotoApiHelper) {
 
-    suspend fun getRecentPhotos(page: Int) = photoApiHelper.getRecentPhotos(page)
+    suspend fun getStoreDetails() = photoApiHelper.getStoreDetails()
 
 }

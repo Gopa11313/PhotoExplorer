@@ -9,7 +9,7 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/redHeader"
+
         android:clipToPadding="false"
         android:paddingTop="100dp" />
 
@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_alignParentTop="true"
-        android:background="@android:color/holo_red_light"
+        android:background="@color/red"
         android:gravity="center"
         android:text="Header"
         android:textColor="@android:color/white"

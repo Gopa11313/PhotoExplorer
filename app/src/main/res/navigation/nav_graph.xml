@@ -21,7 +21,7 @@
         tools:layout="@layout/fragment_details">
 
         <argument
-            android:name="photo"
-            app:argType="com.gopal.photoexplorer.data.model.Photo" />
+            android:name="store"
+            app:argType="com.gopal.photoexplorer.data.model.Store" />
     </fragment>
 </navigation>

@@ -6,17 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import com.gopal.photoexplorer.R
-import com.gopal.photoexplorer.data.model.Photo
+import com.gopal.photoexplorer.data.model.Store
 import com.gopal.photoexplorer.databinding.ItemPhotoBinding
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.NonDisposableHandle.parent
 
-class PhotoAdapter(val context: Context, val data: List<Photo>) : BaseAdapter() {
+class PhotoAdapter(val context: Context, val data: List<Store>, val onClick: (Store) -> Unit) :
+    BaseAdapter() {
     override fun getCount(): Int {
         return data.size
     }
 
-    override fun getItem(p0: Int): Photo {
+    override fun getItem(p0: Int): Store {
         return data[p0]
     }
 
@@ -37,10 +37,13 @@ class PhotoAdapter(val context: Context, val data: List<Photo>) : BaseAdapter() 
         }
 
         val photo = getItem(position)
-        binding.photoTitle.text = photo.title
-        Picasso.get().load(photo.getPhotoUrl()).error(R.drawable.ic_launcher_background)
+        binding.photoTitle.text = photo.name
+        Picasso.get().load(photo.getBannerUrl()).error(R.drawable.ic_launcher_background)
             .into(binding.imageView)
-        binding.photoDescription.text = photo.owner
+        binding.photoDescription.text = photo.description
+        binding.mainLayout.setOnClickListener {
+            onClick(photo)
+        }
         return binding.root
     }
 }
