@@ -10,17 +10,16 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.gopal.photoexplorer.R
 import com.gopal.photoexplorer.databinding.FragmentMainBinding
-import com.gopal.photoexplorer.ui.main.fragments.Adapter.PhotoAdapter
-import com.gopal.photoexplorer.ui.viewmodel.PhotoViewModel
+import com.gopal.photoexplorer.ui.main.fragments.Adapter.StoreAdapter
+import com.gopal.photoexplorer.ui.viewmodel.StoreViewModel
 import com.gopal.photoexplorer.utlis.Resource
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
-    private val viewModel: PhotoViewModel by viewModels()
+    private val viewModel: StoreViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -45,21 +44,23 @@ class MainFragment : Fragment() {
         viewModel.photos.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
                 }
 
                 is Resource.Success -> {
-//                    binding.progressBar.visibility = View.GONE
-                    Log.d("Gopal", resource.data.toString())
-                    val adapter = PhotoAdapter(requireContext(), resource.data ?: emptyList()) { store ->
-                        val action =
-                            MainFragmentDirections.actionMainFragmentToDetailsFragment(store)
-                        findNavController().navigate(action)
-                    }
+                    binding.progressBar.visibility = View.GONE
+                    val adapter =
+                        StoreAdapter(requireContext(), resource.data ?: emptyList()) { store ->
+                            val action =
+                                MainFragmentDirections.actionMainFragmentToDetailsFragment(store)
+                            findNavController().navigate(action)
+                        }
                     binding.listView.adapter = adapter
                 }
 
                 is Resource.Error -> {
-                    Log.d("Gopal error:",resource.message!! )
+                    binding.progressBar.visibility = View.GONE
+                    Log.d("Gopal error:", resource.message!!)
                     Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -80,13 +81,14 @@ class MainFragment : Fragment() {
                 totalItemCount: Int
             ) {
                 val firstChild = binding.listView.getChildAt(0) ?: return
-                val scrollY = -firstChild.top + binding.listView.firstVisiblePosition * firstChild.height
+                val scrollY =
+                    -firstChild.top + binding.listView.firstVisiblePosition * firstChild.height
                 val deltaY = scrollY - previousScrollY
 
                 // Adjust the header offset based on scroll direction
                 headerOffset -= deltaY
 
-                headerOffset = headerOffset.coerceIn(-binding.redHeader.height , 0)
+                headerOffset = headerOffset.coerceIn(-binding.redHeader.height, 0)
 
                 // Apply translation to the header
                 binding.redHeader.translationY = headerOffset.toFloat()

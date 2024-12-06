@@ -1,19 +1,16 @@
 package com.gopal.photoexplorer.ui.main.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.gopal.photoexplorer.R
 import com.gopal.photoexplorer.data.model.Store
 import com.gopal.photoexplorer.databinding.FragmentDetailsBinding
-import com.gopal.photoexplorer.ui.viewmodel.PhotoViewModel
+import com.gopal.photoexplorer.ui.viewmodel.StoreViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailsFragment : Fragment() {
     private lateinit var binding: FragmentDetailsBinding
     private val args: DetailsFragmentArgs by navArgs()
-    private val viewModel: PhotoViewModel by activityViewModels()
+    private val viewModel: StoreViewModel by activityViewModels()
     private var store: Store? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +39,7 @@ class DetailsFragment : Fragment() {
         Picasso.get().load(store!!.getBannerUrl()).error(R.drawable.ic_launcher_background)
             .into(binding.image)
         binding.title.text = store!!.name
+        binding.shortDescription.text = store!!.shortDescription
         binding.description.text = store!!.description
 
     }

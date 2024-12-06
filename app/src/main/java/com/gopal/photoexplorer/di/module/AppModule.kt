@@ -1,15 +1,14 @@
 package com.gopal.photoexplorer.di.module
 
-import com.gopal.photoexplorer.data.api.PhotoApiHelper
-import com.gopal.photoexplorer.data.api.PhotoApiImpl
-import com.gopal.photoexplorer.data.api.PhotoApiService
+import com.gopal.photoexplorer.data.api.StoreApiHelper
+import com.gopal.photoexplorer.data.api.StoreApiImpl
+import com.gopal.photoexplorer.data.api.StoreApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -26,9 +25,9 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providePhotoApiService(retrofit: Retrofit): PhotoApiService = retrofit.create(PhotoApiService::class.java)
+    fun provideStoreApiService(retrofit: Retrofit): StoreApiService = retrofit.create(StoreApiService::class.java)
 
     @Provides
     @Singleton
-    fun providePhotoServiceApiHelper(apiHelperImpl: PhotoApiImpl): PhotoApiHelper = apiHelperImpl
+    fun provideStoreServiceApiHelper(apiHelperImpl: StoreApiImpl): StoreApiHelper = apiHelperImpl
 }
