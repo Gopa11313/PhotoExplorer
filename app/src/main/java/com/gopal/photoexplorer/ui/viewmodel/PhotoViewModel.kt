@@ -16,13 +16,12 @@ class PhotoViewModel @Inject constructor(private val repository: PhotoRepository
     private val _photos = MutableLiveData<Resource<List<Store>>>()
     val photos: LiveData<Resource<List<Store>>> = _photos
     var store: Store? = null
-    fun fetchPhotos(page: Int) {
+    var title= MutableLiveData<String>()
+    fun fetchPhotos() {
         viewModelScope.launch {
-            _photos.postValue(Resource.Loading()) // Post loading state
+            _photos.postValue(Resource.Loading())
             try {
-                // Fetch the PhotoResponse
                 val response = repository.getStoreDetails()
-                // Extract the list of photos from the response and post as success
                 _photos.postValue(Resource.Success(response.store))
             } catch (e: Exception) {
                 // Post error state with the exception message

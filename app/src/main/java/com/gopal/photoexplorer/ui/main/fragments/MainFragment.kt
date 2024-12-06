@@ -36,7 +36,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchPhotos(page = 1)
+        viewModel.fetchPhotos()
         setupObservers()
         setupQuickReturnPattern()
     }
@@ -68,8 +68,8 @@ class MainFragment : Fragment() {
 
     private fun setupQuickReturnPattern() {
         binding.listView.setOnScrollListener(object : AbsListView.OnScrollListener {
-            var headerOffset = 0
-            var previousTop = 0
+            var headerOffset = 0 // Header starts hidden
+            var previousScrollY = 0
 
             override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}
 
@@ -79,16 +79,22 @@ class MainFragment : Fragment() {
                 visibleItemCount: Int,
                 totalItemCount: Int
             ) {
-                val topView = binding.listView.getChildAt(0) ?: return
-                val currentTop = topView.top
-                val scrollDelta = previousTop - currentTop
+                val firstChild = binding.listView.getChildAt(0) ?: return
+                val scrollY = -firstChild.top + binding.listView.firstVisiblePosition * firstChild.height
+                val deltaY = scrollY - previousScrollY
 
-                headerOffset += scrollDelta
-                headerOffset = headerOffset.coerceIn(-binding.redHeader.height, 0)
+                // Adjust the header offset based on scroll direction
+                headerOffset -= deltaY
 
+                headerOffset = headerOffset.coerceIn(-binding.redHeader.height , 0)
+
+                // Apply translation to the header
                 binding.redHeader.translationY = headerOffset.toFloat()
-                previousTop = currentTop
+
+                // Update the previous scroll position
+                previousScrollY = scrollY
             }
         })
     }
+
 }

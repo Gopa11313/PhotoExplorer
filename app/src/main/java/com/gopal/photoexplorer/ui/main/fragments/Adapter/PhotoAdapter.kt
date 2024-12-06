@@ -13,7 +13,8 @@ import com.squareup.picasso.Picasso
 class PhotoAdapter(val context: Context, val data: List<Store>, val onClick: (Store) -> Unit) :
     BaseAdapter() {
     override fun getCount(): Int {
-        return data.size
+//        return data.size
+        return 20
     }
 
     override fun getItem(p0: Int): Store {
@@ -35,14 +36,15 @@ class PhotoAdapter(val context: Context, val data: List<Store>, val onClick: (St
             // Reuse the existing binding
             binding = convertView.tag as ItemPhotoBinding
         }
-
-        val photo = getItem(position)
-        binding.photoTitle.text = photo.name
-        Picasso.get().load(photo.getBannerUrl()).error(R.drawable.ic_launcher_background)
-            .into(binding.imageView)
-        binding.photoDescription.text = photo.description
-        binding.mainLayout.setOnClickListener {
-            onClick(photo)
+        if (position < data.size) {
+            val photo = getItem(position)
+            binding.photoTitle.text = photo.name
+            Picasso.get().load(photo.getBannerUrl()).error(R.drawable.ic_launcher_background)
+                .into(binding.imageView)
+            binding.photoDescription.text = photo.description
+            binding.mainLayout.setOnClickListener {
+                onClick(photo)
+            }
         }
         return binding.root
     }
