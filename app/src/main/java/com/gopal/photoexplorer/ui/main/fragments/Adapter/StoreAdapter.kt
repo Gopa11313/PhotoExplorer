@@ -20,6 +20,7 @@ class StoreAdapter(
         return data.size
     }
 
+
     override fun getItem(p0: Int): Store {
         return data[p0]
     }

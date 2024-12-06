@@ -3,6 +3,7 @@ package com.gopal.photoexplorer.di.module
 import com.gopal.photoexplorer.data.api.StoreApiHelper
 import com.gopal.photoexplorer.data.api.StoreApiImpl
 import com.gopal.photoexplorer.data.api.StoreApiService
+import com.gopal.photoexplorer.utlis.Constants
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,14 +19,15 @@ object AppModule {
     @Singleton
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://apituner.ecbsn.com/")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 
     @Provides
     @Singleton
-    fun provideStoreApiService(retrofit: Retrofit): StoreApiService = retrofit.create(StoreApiService::class.java)
+    fun provideStoreApiService(retrofit: Retrofit): StoreApiService =
+        retrofit.create(StoreApiService::class.java)
 
     @Provides
     @Singleton

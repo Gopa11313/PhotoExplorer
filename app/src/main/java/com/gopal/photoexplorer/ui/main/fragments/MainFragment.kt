@@ -10,6 +10,7 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.gopal.photoexplorer.data.model.Store
 import com.gopal.photoexplorer.databinding.FragmentMainBinding
 import com.gopal.photoexplorer.ui.main.fragments.Adapter.StoreAdapter
 import com.gopal.photoexplorer.ui.viewmodel.StoreViewModel
@@ -20,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private val viewModel: StoreViewModel by viewModels()
+    private lateinit var adapter: StoreAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -49,13 +51,7 @@ class MainFragment : Fragment() {
 
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    val adapter =
-                        StoreAdapter(requireContext(), resource.data ?: emptyList()) { store ->
-                            val action =
-                                MainFragmentDirections.actionMainFragmentToDetailsFragment(store)
-                            findNavController().navigate(action)
-                        }
-                    binding.listView.adapter = adapter
+                    setupAdapter(resource.data?: emptyList())
                 }
 
                 is Resource.Error -> {
@@ -66,10 +62,16 @@ class MainFragment : Fragment() {
             }
         }
     }
-
+    private fun setupAdapter(data:List<Store>) {
+        adapter = StoreAdapter(requireContext(), data) { store ->
+            val action = MainFragmentDirections.actionMainFragmentToDetailsFragment(store)
+            findNavController().navigate(action)
+        }
+        binding.listView.adapter = adapter
+    }
     private fun setupQuickReturnPattern() {
         binding.listView.setOnScrollListener(object : AbsListView.OnScrollListener {
-            var headerOffset = 0 // Header starts hidden
+            var headerOffset = 0
             var previousScrollY = 0
 
             override fun onScrollStateChanged(view: AbsListView?, scrollState: Int) {}

@@ -10,12 +10,12 @@ import androidx.activity.viewModels
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private lateinit var _binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private val viewModel: StoreViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(_binding.root)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setTheme(R.style.Theme_PhotoExplorer)
 
     }
@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     private fun setTitle() {
         viewModel.title.observe(this) {
             if (!it.isNullOrEmpty()) {
-                _binding.textViewTitle.text = it
+                binding.textViewTitle.text = it
             }
         }
     }

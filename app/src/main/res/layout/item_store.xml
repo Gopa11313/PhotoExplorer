@@ -37,6 +37,7 @@
             android:ellipsize="end"
             android:lines="6"
             android:maxLines="6"
+            android:textColor="@color/gray"
             android:text="Photo Description"
             android:textSize="13sp"
             android:textStyle="normal" />
